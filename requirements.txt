@@ -7,6 +7,7 @@ olefile==0.46
 pip-chill==1.0.0
 pipdeptree==1.0.0
 pipreqs==0.4.10
+plotly==4.13.0
 plotly-express==0.4.1
 pyopenssl==20.0.0
 pysocks==1.7.1
