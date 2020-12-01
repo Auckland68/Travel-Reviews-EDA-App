@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 import streamlit as st
-import plotly.express as px
+import plotly
 
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
@@ -45,7 +45,7 @@ if select_users == "Map":
     st.markdown(cat)
     st.map(modified_data)
 else:
-    fig = px.pie(review_locs, values = "Number of Reviews", names = "Visitor Location")
+    fig =plotly.pie(review_locs, values = "Number of Reviews", names = "Visitor Location")
     st.subheader("Visitor Location")
     st.markdown(cat)
     st.plotly_chart(fig)
@@ -56,7 +56,7 @@ if st.sidebar.checkbox("Show",True, key = "r"):
     st.subheader("Reviews posted by Month")
     test_series = pd.DataFrame(data["post month"].value_counts().reset_index())
     test_series.columns = ["Month","Reviews"]
-    fig = px.bar(test_series, x = "Month", y = "Reviews")
+    fig = plotly.bar(test_series, x = "Month", y = "Reviews")
     st.plotly_chart(fig)
 
 # Overall sentiment for Arun District By category
@@ -69,10 +69,10 @@ if st.sidebar.checkbox("Show",True, key = "s"):
     if select_chart == "Histogram":
         st.subheader("Sentiment By Category for Arun District")
         st.subheader("%s" % (cat_sentiment))
-        fig = px.bar(sent_count, x = "Sentiment", y = "Number of Reviews", color = "Number of Reviews", height = 500)
+        fig = plotly.bar(sent_count, x = "Sentiment", y = "Number of Reviews", color = "Number of Reviews", height = 500)
         st.plotly_chart(fig)
     else:
-        fig = px.pie(sent_count, values = "Number of Reviews", names = "Sentiment")
+        fig =plotly.pie(sent_count, values = "Number of Reviews", names = "Sentiment")
         st.subheader("Sentiment By Category for Arun District")
         st.subheader("%s" % (cat_sentiment))
         st.plotly_chart(fig)
@@ -88,7 +88,7 @@ name_counts = pd.DataFrame({"Name":name_counts.index,"Number of Reviews":name_co
 if st.sidebar.checkbox("Show",True, key = "m"):
     st.subheader("Highest Number of Reviews By Town,Category,Establishment and Sentiment")
     st.subheader("%s %s %s" % (town_choices,cat_choices,sentiment))
-    fig = px.bar(name_counts, x="Name", y="Number of Reviews",color = "Number of Reviews", width = 800, height = 500)
+    fig = plotly.bar(name_counts, x="Name", y="Number of Reviews",color = "Number of Reviews", width = 800, height = 500)
     st.plotly_chart(fig)
 
 
@@ -112,10 +112,10 @@ if st.sidebar.checkbox("Show", True, key = "tce"):
     sentiment_counts = data[(data["town"] == town_choice) & (data["category"] == category_choice) & (data["type"].isin(type_choice))]["sentiment"].value_counts()
     sentiment_counts = pd.DataFrame({"Sentiment":sentiment_counts.index,"Number of Reviews":sentiment_counts.values})
     if select == "Histogram":
-        fig = px.bar(sentiment_counts, x = "Sentiment", y = "Number of Reviews", color = "Number of Reviews", height = 500)
+        fig = plotly.bar(sentiment_counts, x = "Sentiment", y = "Number of Reviews", color = "Number of Reviews", height = 500)
         st.plotly_chart(fig)
     else:
-        fig = px.pie(sentiment_counts, values = "Number of Reviews", names = "Sentiment")
+        fig = plotly.pie(sentiment_counts, values = "Number of Reviews", names = "Sentiment")
         st.plotly_chart(fig)
 
 
