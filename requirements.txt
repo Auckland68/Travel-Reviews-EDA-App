@@ -1,0 +1,15 @@
+brotlipy==0.7.0
+matplotlib==3.3.2
+mkl-fft==1.2.0
+mkl-random==1.1.1
+mkl-service==2.3.0
+olefile==0.46
+pip-chill==1.0.0
+pipdeptree==1.0.0
+pipreqs==0.4.10
+plotly-express==0.4.1
+pyopenssl==20.0.0
+pysocks==1.7.1
+streamlit==0.71.0
+win-inet-pton==1.1.0
+wincertstore==0.2
