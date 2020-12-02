@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 st.title("Arun District Travel Review Data 2019")
 st.sidebar.subheader("Dashboards")
-dashboard_choice = st.sidebar.selectbox("Please Choose Dashboard",("Exploratory Data Analysis","Sentiment Analyser Tool"),key = "main")
+dashboard_choice = st.sidebar.selectbox("Please Choose Dashboard",("Exploratory Data Analysis"),key = "main")
 st.markdown("This application is a Streamlit Dashboard to analyse Tourist Reviews in Arun District️ in 2019")
 st.text("Reviews are classed as postive relating to user review ratings of 4 and 5, neutral - ratings of 3, and negative - ratings of 1 and 2. For more information on the features please refer to the main report.")
 #st.sidebar.title("Arun District Travel Review Data 2019")
