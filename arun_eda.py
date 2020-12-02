@@ -16,7 +16,7 @@ st.text("Reviews are classed as postive relating to user review ratings of 4 and
 st.sidebar.subheader("Arun District Travel Review Data")
 
 # Load dataset and cache the output
-DATA_URL = ("GitHub/Auckland68/Travel-Reviews-EDA-App/new_data.csv")
+DATA_URL = ("new_data.csv")
 
 @st.cache(persist = True)
 def load_data():
