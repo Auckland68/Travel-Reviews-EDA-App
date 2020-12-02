@@ -28,7 +28,6 @@ st.sidebar.subheader("Arun District Travel Review Data")
 
 # Load dataset and cache the output
 DATA_URL = ("new_data.csv")
-WEIGHTS = ("shallow.h5")
 
 @st.cache(persist = True)
 def load_data():
@@ -36,8 +35,7 @@ def load_data():
     return data
 
 data = load_data()
-
-model = load_model(WEIGHTS)
+model = load_model("shallow.h5")
 
 if dashboard_choice == "Exploratory Data Analysis":
     if st.sidebar.checkbox('Show Raw Data'):
