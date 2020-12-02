@@ -37,11 +37,7 @@ def load_data():
 
 data = load_data()
 
-def load_mod():
-    model = load_model(WEIGHTS)
-    return model
-
-model = load_mod()
+model = load_model(WEIGHTS)
 
 if dashboard_choice == "Exploratory Data Analysis":
     if st.sidebar.checkbox('Show Raw Data'):
