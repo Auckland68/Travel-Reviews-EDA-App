@@ -18,8 +18,13 @@ from nltk.corpus import stopwords
 from nltk import FreqDist
 from nltk.util import ngrams
 import contractions
+
+from gensim.summarization.summarizer import summarize
+from gensim.summarization import keywords
 import re
 import string
+
+import SessionState
 
 st.title("Arun District Travel Review Data 2019")
 st.sidebar.subheader("Dashboards")
@@ -138,7 +143,7 @@ if dashboard_choice == "Exploratory Data Analysis":
         st.subheader("Keywords/Bigrams By Town, Category and Sentiment")
         st.text("If single keywords don't make sense, try bigrams")
         st.subheader("%s %s %s %s" % (town_pick,cat_pick,sentiment_pick,word_choice))
-        
+
         if word_choice == "Keywords":
             fig = px.bar(key_words,x = "Word", y = "Freq")
         else:
@@ -228,7 +233,13 @@ else:
             prediction = model.predict(x_1)[0][0]
         return prediction
 
-    review_text = st.text_area("Enter review", height=None, max_chars=1000, key=None)
+    state = SessionState.get(key=0)
+    ta_placeholder = st.empty()
+    if st.button('Clear'):
+        state.key += 1
+
+    review_text = ta_placeholder.text_area("Enter review",value = ' ', height=None, max_chars=5000, key=state.key)
+    review_text
     if st.button("Analyse"):
         with st.spinner("Analysing the text"):
             prediction=predict(review_text)
@@ -251,3 +262,8 @@ else:
 
     st.write("The most common keywords from this review and related frequency:")
     st.success(token(review_text))
+
+    if len(review_text) > 500:
+        summWords = summarize(review_text)
+        st.subheader("Review Summary")
+        st.write(summWords)
