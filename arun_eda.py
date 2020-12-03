@@ -35,7 +35,7 @@ def load_data():
     return data
 
 data = load_data()
-model = load_model("shallow.h5")
+model = load_model("shallow")
 
 if dashboard_choice == "Exploratory Data Analysis":
     if st.sidebar.checkbox('Show Raw Data'):
