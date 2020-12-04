@@ -1,9 +1,10 @@
-matplotlib==3.3.2
-wordcloud==1.8.1
 nltk==3.5
-plotly==4.13.0
+numpy==1.19.4
 contractions==0.0.25
+plotly==4.13.0
 streamlit==0.71.0
 pandas==1.1.4
+gensim==3.8.0
+wordcloud==1.8.1
 tensorflow==2.1.0
-numpy==1.19.4
+matplotlib==3.3.2
