@@ -15,16 +15,9 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from collections import Counter
 import nltk
 from nltk.corpus import stopwords
-from nltk import FreqDist
-from nltk.util import ngrams
 import contractions
-
-from gensim.summarization.summarizer import summarize
-from gensim.summarization import keywords
 import re
 import string
-
-import SessionState
 
 st.title("Arun District Travel Review Data 2019")
 st.sidebar.subheader("Dashboards")
@@ -103,9 +96,7 @@ if dashboard_choice == "Exploratory Data Analysis":
     cat_pick = st.sidebar.selectbox("Choose Category", ("Accommodation","Food","Attractions"),key = "keycat")
     sentiment_pick = st.sidebar.selectbox("Choose Sentiment",("positive","negative","neutral"),key = "keysent")
     chosen = data[(data["town"] == town_pick) & (data["category"] == cat_pick) &(data["sentiment"]==sentiment_pick)]
-    word_choice =  st.sidebar.selectbox("Choose keywords or bigrams",("Keywords","Bigrams"),key = "big")
 
-    # Text processing function
     def get_nouns(df):
         df["review_lower"] = df["review"].apply(lambda x: x.strip().lower())
         df["review_lower"] = df["review_lower"].str.replace(r'\bread less$', '', regex=True).str.strip()
@@ -119,35 +110,23 @@ if dashboard_choice == "Exploratory Data Analysis":
         df['pos_tags'] = df['stop'].apply(nltk.tag.pos_tag)
         df['nouns'] = df['pos_tags'].apply(lambda x: [i[0] for i in x if i[1].startswith('NN')])
         df["all_nouns"] = df.nouns.apply(lambda x: Counter(x))
-        df['bigrams'] = df.nouns.apply(lambda x: list(ngrams(x,2)))
-        df['all_bigrams'] = df.bigrams.apply(lambda x: Counter(x))
         return df
 
     key_df = get_nouns(chosen)
+    st.write(key_df)
 
-    def count_total(df,col):
-        df = df[col].sum()
+    def count_total(df):
+        df = df["all_nouns"].sum()
         df_top = df.most_common(15)
         return df_top
 
-    key_words = pd.DataFrame(count_total(key_df,"all_nouns"),columns =["Word","Freq"])
-
-    bigrams = pd.DataFrame(count_total(key_df,"all_bigrams"),columns = ["Bigrams","Freq"])
-    def join(x):
-        str =  ' '.join(x)
-        return str
-    bigrams["Bigrams"] = bigrams.Bigrams.apply(lambda x: join(x))
-    st.write(bigrams)
+    key_words = pd.DataFrame(count_total(key_df),columns =["Word","Freq"])
+    st.write(key_words)
 
     if st.sidebar.checkbox("Show",True,key = "n"):
-        st.subheader("Keywords/Bigrams By Town, Category and Sentiment")
-        st.text("If single keywords don't make sense, try bigrams")
-        st.subheader("%s %s %s %s" % (town_pick,cat_pick,sentiment_pick,word_choice))
-
-        if word_choice == "Keywords":
-            fig = px.bar(key_words,x = "Word", y = "Freq")
-        else:
-            fig = px.bar(bigrams,x = "Bigrams",y = "Freq")
+        st.subheader("Keywords By Town, Category and Sentiment")
+        st.subheader("%s %s %s" % (town_pick,cat_pick,sentiment_pick))
+        fig = px.bar(key_words,x = "Word", y = "Freq")
         st.plotly_chart(fig)
 
     # Most highly reviewed establishments
@@ -233,13 +212,7 @@ else:
             prediction = model.predict(x_1)[0][0]
         return prediction
 
-    state = SessionState.get(key=0)
-    ta_placeholder = st.empty()
-    if st.button('Clear'):
-        state.key += 1
-
-    review_text = ta_placeholder.text_area("Enter review",value = ' ', height=None, max_chars=5000, key=state.key)
-    review_text
+    review_text = st.text_area("Enter review", height=None, max_chars=1000, key=None)
     if st.button("Analyse"):
         with st.spinner("Analysing the text"):
             prediction=predict(review_text)
@@ -260,10 +233,5 @@ else:
         freq = nltk.FreqDist(nouns)
         return freq.most_common(10)
 
-    st.write("The most common keywords from this review and related frequency:")
+    st.write("The most common keyword nouns from this review and related frequency:")
     st.success(token(review_text))
-
-    if len(review_text) > 500:
-        summWords = summarize(review_text)
-        st.subheader("Review Summary")
-        st.write(summWords)
