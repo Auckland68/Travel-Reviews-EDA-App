@@ -43,7 +43,7 @@ def load_data():
 
 data = load_data()
 
-model = load_model("shallow")
+model = load_model("shallow.h5")
 
 
 if dashboard_choice == "Exploratory Data Analysis":
